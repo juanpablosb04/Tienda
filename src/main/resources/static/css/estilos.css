@@ -1,0 +1,40 @@
+
+/* 
+    Created on : 22 ene 2024, 19:53:16
+    Author     : Juan Pablo
+*/
+
+p{
+    background-color: green;
+    color: white;
+}
+
+h1{
+    text-align: center;
+    background-color: black;
+    color: red;
+}
+
+h2{
+    
+   text-align: center;
+    background-color: green;
+    color: yellow; 
+}
+
+td{
+    text-align: center;   
+}
+
+tbody tr:nth-child(odd){
+    background-color: blue;
+    color: white;
+    
+}
+
+tbody tr:nth-child(even){
+    background-color: black;
+    color: white;
+    
+}
+
