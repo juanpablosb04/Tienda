@@ -1,0 +1,141 @@
+<!-- Espaciado para el navbar fijo -->
+<div class="pt-20">
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECCIÓN 1: HERO                        -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="relative h-screen flex items-center overflow-hidden">
+
+    <!-- Imagen de fondo -->
+    <div class="absolute inset-0 z-0">
+      <img
+        src="https://images.unsplash.com/photo-1588514912908-8f5891714f8d?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt="AETHERIA Signature Fragrance"
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 hero-gradient"></div>
+    </div>
+
+    <!-- Contenido del hero -->
+    <div class="relative z-10 px-margin-desktop max-w-container-max mx-auto w-full">
+      <div class="max-w-xl">
+        <span class="font-body text-label-caps text-secondary mb-4 block uppercase tracking-widest">
+          El arte de la perfumería
+        </span>
+        <h2 class="font-display text-display-lg mb-8 text-primary whitespace-nowrap">
+        Esencia de Elegancia
+      </h2>
+        <button
+          routerLink="/perfumes"
+          class="bg-primary text-on-primary px-10 py-5 font-body text-button hover:opacity-90 transition-all border border-primary uppercase tracking-widest"
+        >
+          Ver catálogo
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECCIÓN 2: FEATURED PRODUCTS           -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="py-section-gap px-margin-desktop max-w-container-max mx-auto">
+
+    <!-- Header de sección -->
+    <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+      <div>
+        <span class="font-body text-label-caps text-secondary block mb-2 uppercase tracking-widest">
+          Selección exclusiva
+        </span>
+        <h3 class="font-display text-headline-lg text-primary">Productos Destacados</h3>
+      </div>
+      <a routerLink="/perfumes" class="font-body text-label-caps text-primary border-b border-primary pb-1 uppercase tracking-widest">
+        Ver todos
+      </a>
+    </div>
+
+    <!-- Grid asimétrico del diseño Stitch (12 columnas) -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+
+      <!-- Producto grande: ocupa 7 columnas -->
+      <div class="md:col-span-7">
+        <app-product-card
+          [product]="featuredProducts[0]"
+          size="large"
+        />
+      </div>
+
+      <!-- Productos pequeños: 5 columnas, apilados -->
+      <div class="md:col-span-5 flex flex-col gap-gutter">
+        @for (product of featuredProducts.slice(1); track product.id) {
+          <app-product-card [product]="product" />
+        }
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECCIÓN 3: HERITAGE (fondo gris)       -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="bg-secondary-container py-section-gap">
+    <div class="px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+
+      <div class="md:col-span-5 md:col-start-2 mb-12 md:mb-0">
+        <span class="font-body text-label-caps text-on-secondary-container block mb-6 uppercase tracking-widest">
+          NUESTRA HERENCIA
+        </span>
+        <h3 class="font-display text-headline-lg text-primary mb-8 leading-tight italic">
+          "El aroma es la forma más intensa del recuerdo."
+        </h3>
+        <p class="font-body text-body-lg text-secondary mb-10 leading-relaxed">
+          Fundada en el corazón de Grasse, AETHERIA nació de un deseo de regresar a los esenciales de la perfumería.
+          Solo obtenemos las botánicas más raras, destilando manualmente cada esencia para preservar su alma.
+        </p>
+        <button class="border border-primary text-primary px-8 py-4 font-body text-button hover:bg-primary hover:text-on-primary transition-all uppercase tracking-widest">
+          Descubre quienes somos
+        </button>
+      </div>
+
+      <div class="md:col-span-5 md:col-start-8">
+        <div class="relative">
+          <img
+            src="https://images.unsplash.com/photo-1682179329068-c2b92d996033?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="The Craft of AETHERIA"
+            class="w-full h-auto aspect-[3/4] object-cover"
+          />
+          <div class="absolute -bottom-10 -left-10 bg-surface-container-lowest p-8 hidden lg:block border border-outline-variant/30">
+            <p class="font-body text-label-caps text-primary uppercase tracking-widest">Since 2010</p>
+            <p class="font-body text-body-md text-secondary mt-1">Costa Rica</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECCIÓN 4: NEW ARRIVALS                -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="py-section-gap px-margin-desktop max-w-container-max mx-auto">
+
+    <div class="text-center mb-16">
+      <span class="font-body text-label-caps text-secondary block mb-2 uppercase tracking-widest">
+        RECIENTEMENTE LANZADOS
+      </span>
+      <h3 class="font-display text-headline-lg text-primary">Nuevos ingresos</h3>
+    </div>
+
+    <!-- Grid de 4 columnas con @for -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+      @for (product of newArrivals; track product.id) {
+        <app-product-card [product]="product" />
+      }
+    </div>
+
+  </section>
+
+</div>

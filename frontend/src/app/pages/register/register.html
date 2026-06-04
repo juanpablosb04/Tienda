@@ -1,0 +1,108 @@
+<div class="min-h-screen bg-secondary-container flex items-center justify-center px-margin-mobile py-16">
+  <div class="w-full max-w-md bg-surface-container-lowest p-12 mt-10">
+
+    <!-- Logo -->
+    <div class="text-center mb-10">
+      <h1 class="font-display text-3xl text-primary tracking-tighter mb-1">AETHERIA</h1>
+      <p class="font-body text-label-caps text-secondary uppercase tracking-widest">Exquisite Fragrance</p>
+    </div>
+
+    <h2 class="font-display text-headline-lg text-primary mb-2">Create Account</h2>
+    <p class="font-body text-body-md text-secondary mb-8">Join the inner circle.</p>
+
+    @if (errorMsg()) {
+      <div class="bg-red-50 border border-red-200 text-red-700 font-body text-label-caps px-4 py-3 mb-6 uppercase tracking-widest">
+        {{ errorMsg() }}
+      </div>
+    }
+
+    <div class="space-y-7">
+
+      <!-- First + Last name -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="font-body text-label-caps text-primary uppercase tracking-widest block mb-2">First Name</label>
+          <input
+            type="text"
+            placeholder="Jane"
+            [value]="firstName()"
+            (input)="firstName.set($any($event.target).value)"
+            class="w-full border-b border-outline-variant bg-transparent py-3 font-body text-body-md text-primary placeholder-secondary focus:outline-none focus:border-primary transition-colors"
+          />
+        </div>
+        <div>
+          <label class="font-body text-label-caps text-primary uppercase tracking-widest block mb-2">Last Name</label>
+          <input
+            type="text"
+            placeholder="Doe"
+            [value]="lastName()"
+            (input)="lastName.set($any($event.target).value)"
+            class="w-full border-b border-outline-variant bg-transparent py-3 font-body text-body-md text-primary placeholder-secondary focus:outline-none focus:border-primary transition-colors"
+          />
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="font-body text-label-caps text-primary uppercase tracking-widest block mb-2">Email Address</label>
+        <input
+          type="email"
+          placeholder="your@email.com"
+          [value]="email()"
+          (input)="email.set($any($event.target).value)"
+          class="w-full border-b border-outline-variant bg-transparent py-3 font-body text-body-md text-primary placeholder-secondary focus:outline-none focus:border-primary transition-colors"
+        />
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="font-body text-label-caps text-primary uppercase tracking-widest block mb-2">Password</label>
+        <div class="relative">
+          <input
+            [type]="showPass() ? 'text' : 'password'"
+            placeholder="Min. 8 characters"
+            [value]="password()"
+            (input)="password.set($any($event.target).value)"
+            class="w-full border-b border-outline-variant bg-transparent py-3 font-body text-body-md text-primary placeholder-secondary focus:outline-none focus:border-primary transition-colors pr-10"
+          />
+          <button (click)="showPass.set(!showPass())" class="absolute right-0 top-3 text-secondary hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[18px]">{{ showPass() ? 'visibility_off' : 'visibility' }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Confirm password -->
+      <div>
+        <label class="font-body text-label-caps text-primary uppercase tracking-widest block mb-2">Confirm Password</label>
+        <input
+          [type]="showPass() ? 'text' : 'password'"
+          placeholder="Repeat your password"
+          [value]="confirm()"
+          (input)="confirm.set($any($event.target).value)"
+          class="w-full border-b border-outline-variant bg-transparent py-3 font-body text-body-md text-primary placeholder-secondary focus:outline-none focus:border-primary transition-colors"
+        />
+      </div>
+
+      <!-- Submit -->
+      <button
+        (click)="onSubmit()"
+        [disabled]="isLoading()"
+        class="w-full py-5 bg-primary text-on-primary font-body text-label-caps uppercase tracking-widest hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+      >
+        @if (isLoading()) {
+          <span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+          Creating account...
+        } @else {
+          Create Account →
+        }
+      </button>
+
+    </div>
+
+    <p class="text-center font-body text-body-md text-secondary mt-8">
+      Already have an account?
+      <a routerLink="/login" class="text-primary font-medium hover:opacity-70 transition-opacity ml-1">Sign In</a>
+    </p>
+
+  </div>
+</div>

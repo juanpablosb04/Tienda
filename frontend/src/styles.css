@@ -1,0 +1,62 @@
+/* ─── Fuentes de Google ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+
+/* ─── Tailwind v4 ────────────────────────────────────────────── */
+@import "tailwindcss";
+
+/* ─── Tokens del diseño Stitch (AETHERIA) ───────────────────── */
+@theme {
+  /* Colores */
+  --color-primary:                  #000000;
+  --color-on-primary:               #ffffff;
+  --color-secondary:                #5f5e5a;
+  --color-background:               #f9f9f9;
+  --color-surface:                  #f9f9f9;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container:        #eeeeee;
+  --color-secondary-container:      #e5e2dc;
+  --color-on-secondary-container:   #656460;
+  --color-on-surface:               #1a1c1c;
+  --color-on-surface-variant:       #444748;
+  --color-outline-variant:          #c4c7c7;
+
+  /* Tipografias */
+  --font-display: "Playfair Display", serif;
+  --font-body:    "Manrope", sans-serif;
+
+  /* Tamaños de texto */
+  --text-display-lg:     64px;
+  --text-display-mobile: 40px;
+  --text-headline-lg:    32px;
+  --text-headline-md:    24px;
+  --text-body-lg:        18px;
+  --text-body-md:        16px;
+  --text-label-caps:     12px;
+
+  /* Espaciados personalizados */
+  --spacing-margin-desktop: 64px;
+  --spacing-margin-mobile:  20px;
+  --spacing-section-gap:    120px;
+  --spacing-gutter:         24px;
+
+  /* Ancho máximo del contenedor */
+  --width-container-max: 1280px;
+}
+
+/* ─── Estilos base globales ─────────────────────────────────── */
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+/* Gradiente del hero (definido por Stitch como clase manual) */
+.hero-gradient {
+  background: linear-gradient(
+    to right,
+    rgba(249, 249, 249, 0.85) 0%,
+    rgba(249, 249, 249, 0.40) 50%,
+    transparent 100%
+  );
+}

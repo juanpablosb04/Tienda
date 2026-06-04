@@ -1,0 +1,189 @@
+<div class="pt-28 pb-section-gap max-w-container-max mx-auto px-margin-desktop">
+
+  <h1 class="font-display text-4xl text-primary mb-2">Shopping Bag</h1>
+  <p class="font-body text-body-md text-secondary mb-12">
+    Review your selection before finalizing your order.
+  </p>
+
+
+  <!-- ── CARRITO VACÍO ──────────────────────────────────────── -->
+  @if (cartService.isEmpty()) {
+    <div class="flex flex-col items-center justify-center py-32 text-center">
+      <span class="material-symbols-outlined text-6xl text-secondary mb-6">shopping_bag</span>
+      <h2 class="font-display text-headline-lg text-primary mb-4">Your bag is empty</h2>
+      <p class="font-body text-body-md text-secondary mb-8">
+        Discover our collection of artisanal fragrances.
+      </p>
+      <a
+        routerLink="/perfumes"
+        class="bg-primary text-on-primary px-10 py-5 font-body text-label-caps uppercase tracking-widest hover:opacity-90 transition-opacity"
+      >
+        Explore Collection
+      </a>
+    </div>
+  }
+
+
+  <!-- ── CARRITO CON ITEMS ──────────────────────────────────── -->
+  @if (!cartService.isEmpty()) {
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+
+      <!-- ── Lista de items (8 columnas) ─────────────────────── -->
+      <div class="lg:col-span-8 space-y-0">
+
+        @for (item of cartService.cartItems(); track item.perfume.id + '-' + item.size.value) {
+          <div class="flex gap-6 py-8 border-b border-outline-variant/30">
+
+            <!-- Imagen -->
+            <div class="w-24 h-24 bg-surface-container-lowest shrink-0 overflow-hidden border border-outline-variant/10">
+              <img
+                [src]="item.perfume.image"
+                [alt]="item.perfume.name"
+                class="w-full h-full object-cover"
+              />
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <div>
+                  <p class="font-body text-label-caps text-secondary uppercase tracking-widest mb-1">
+                    {{ item.perfume.brand }}
+                  </p>
+                  <h3 class="font-display text-headline-md text-primary">
+                    {{ item.perfume.name }}
+                  </h3>
+                  <p class="font-body text-body-md text-secondary mt-1">
+                    {{ item.size.label }}
+                  </p>
+                </div>
+                <span class="font-body text-body-lg text-primary">
+                  {{ item.size.price * item.quantity | currency }}
+                </span>
+              </div>
+
+              <!-- Cantidad + Remove -->
+              <div class="flex items-center justify-between mt-4">
+
+                <!-- Selector de cantidad -->
+                <div class="flex items-center border border-outline-variant">
+                  <button
+                    (click)="updateQty(item.perfume.id, item.size.value, -1, item.quantity)"
+                    class="w-9 h-9 flex items-center justify-center text-secondary hover:text-primary hover:bg-surface-container transition-all font-body text-lg"
+                  >
+                    −
+                  </button>
+                  <span class="w-10 text-center font-body text-body-md text-primary">
+                    {{ item.quantity }}
+                  </span>
+                  <button
+                    (click)="updateQty(item.perfume.id, item.size.value, +1, item.quantity)"
+                    class="w-9 h-9 flex items-center justify-center text-secondary hover:text-primary hover:bg-surface-container transition-all font-body text-lg"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <!-- Remove -->
+                <button
+                  (click)="remove(item.perfume.id, item.size.value)"
+                  class="flex items-center gap-2 font-body text-label-caps text-secondary hover:text-primary transition-colors uppercase tracking-widest"
+                >
+                  <span class="material-symbols-outlined text-[16px]">delete</span>
+                  Remove
+                </button>
+
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Shipping banner (si aplica envío gratis) -->
+        @if (cartService.shippingCost() === 0) {
+          <div class="flex items-center gap-4 mt-6 p-5 bg-secondary-container">
+            <span class="material-symbols-outlined text-primary">local_shipping</span>
+            <div>
+              <p class="font-body text-label-caps text-primary uppercase tracking-widest">
+                Complimentary Shipping Applied
+              </p>
+              <p class="font-body text-label-caps text-secondary uppercase tracking-widest mt-1">
+                Your order qualifies for free standard global shipping.
+              </p>
+            </div>
+          </div>
+        }
+
+      </div>
+
+
+      <!-- ── Order Summary (4 columnas) ──────────────────────── -->
+      <div class="lg:col-span-4">
+        <div class="border border-outline-variant/30 p-8 sticky top-28">
+
+          <h2 class="font-display text-headline-md text-primary mb-8">Order Summary</h2>
+
+          <div class="space-y-4 mb-6">
+
+            <div class="flex justify-between font-body text-body-md">
+              <span class="text-secondary">Subtotal</span>
+              <span class="text-primary">{{ cartService.subtotal() | currency }}</span>
+            </div>
+
+            <div class="flex justify-between font-body text-body-md">
+              <span class="text-secondary">Shipping</span>
+              @if (cartService.shippingCost() === 0) {
+                <span class="text-green-600 font-medium uppercase text-[12px] tracking-widest">Free</span>
+              } @else {
+                <span class="text-primary">{{ cartService.shippingCost() | currency }}</span>
+              }
+            </div>
+
+            <div class="flex justify-between font-body text-body-md">
+              <span class="text-secondary">Estimated Tax</span>
+              <span class="text-primary">{{ cartService.estimatedTax() | currency }}</span>
+            </div>
+
+          </div>
+
+          <div class="border-t border-outline-variant/30 pt-6 mb-8">
+            <div class="flex justify-between">
+              <span class="font-display text-headline-md text-primary">Total</span>
+              <span class="font-display text-headline-md text-primary">
+                {{ cartService.total() | currency }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Checkout button -->
+          <button class="w-full py-5 bg-primary text-on-primary font-body text-label-caps uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mb-6">
+            <span class="material-symbols-outlined text-[16px]">lock</span>
+            Secure Checkout
+          </button>
+
+          <!-- Badges -->
+          <div class="space-y-3 mb-6">
+            <div class="flex items-center gap-2 text-secondary">
+              <span class="material-symbols-outlined text-[16px]">shield</span>
+              <span class="font-body text-label-caps uppercase tracking-widest">Secure SSL Encryption</span>
+            </div>
+            <div class="flex items-center gap-2 text-secondary">
+              <span class="material-symbols-outlined text-[16px]">eco</span>
+              <span class="font-body text-label-caps uppercase tracking-widest">Eco-Friendly Packaging</span>
+            </div>
+          </div>
+
+          <!-- Promo code -->
+          <div class="border-t border-outline-variant/30 pt-6">
+            <button class="flex items-center justify-between w-full font-body text-label-caps text-primary uppercase tracking-widest hover:opacity-60 transition-opacity">
+              Add Promo Code
+              <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  }
+
+</div>

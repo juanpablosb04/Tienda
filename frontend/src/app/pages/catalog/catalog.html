@@ -1,0 +1,217 @@
+<div class="pt-[140px] pb-section-gap max-w-container-max mx-auto px-margin-desktop">
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- HEADER + SORT                              -->
+  <!-- ══════════════════════════════════════════ -->
+  <header class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+
+    <div>
+      <h1 class="font-display text-5xl md:text-display-lg mb-4 text-primary">Collection</h1>
+      <p class="font-body text-body-lg text-secondary max-w-xl">
+        Explore our curated selection of artisanal fragrances, from deep
+        woody essences to ethereal floral bouquets.
+      </p>
+
+      <!-- Badge de filtros activos -->
+      @if (activeFiltersCount() > 0) {
+        <div class="flex items-center gap-4 mt-4">
+          <span class="font-body text-label-caps text-secondary uppercase tracking-widest">
+            {{ filteredPerfumes().length }} results
+          </span>
+          <button
+            (click)="clearAllFilters()"
+            class="font-body text-label-caps text-primary border-b border-primary uppercase tracking-widest hover:opacity-60 transition-opacity"
+          >
+            Clear all ({{ activeFiltersCount() }})
+          </button>
+        </div>
+      }
+    </div>
+
+    <!-- Sort -->
+    <div class="flex items-center gap-4 self-end md:self-auto border-b border-primary pb-2">
+      <span class="font-body text-label-caps text-secondary uppercase tracking-widest">Sort By</span>
+      <select
+        [value]="sortBy()"
+        (change)="onSortChange($any($event.target).value)"
+        class="bg-transparent border-none focus:ring-0 font-body text-label-caps text-primary cursor-pointer appearance-none pr-8 uppercase tracking-widest"
+      >
+        @for (option of sortOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+      <span class="material-symbols-outlined text-[16px]">expand_more</span>
+    </div>
+
+  </header>
+
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- LAYOUT: SIDEBAR + GRID                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="flex flex-col md:grid md:grid-cols-12 gap-gutter">
+
+
+    <!-- ── SIDEBAR DE FILTROS ─────────────────── -->
+    <aside class="md:col-span-3 space-y-12">
+
+      <!-- Filtro: Género -->
+      <section>
+        <h3 class="font-body text-label-caps mb-6 text-primary tracking-widest uppercase">
+          Gender
+        </h3>
+        <div class="space-y-4">
+          @for (option of genderOptions; track option.value) {
+            <label class="flex items-center group cursor-pointer">
+              <input
+                type="checkbox"
+                [checked]="isGenderSelected(option.value)"
+                (change)="toggleGender(option.value)"
+                class="w-4 h-4 border-outline-variant rounded-none text-primary focus:ring-0 mr-3 cursor-pointer"
+              />
+              <span
+                class="font-body text-body-md transition-colors"
+                [class.text-primary]="isGenderSelected(option.value)"
+                [class.font-medium]="isGenderSelected(option.value)"
+                [class.text-secondary]="!isGenderSelected(option.value)"
+              >
+                {{ option.label }}
+              </span>
+            </label>
+          }
+        </div>
+      </section>
+
+      <!-- Filtro: Notas (chips toggle) -->
+      <section>
+        <h3 class="font-body text-label-caps mb-6 text-primary tracking-widest uppercase">
+          Notes
+        </h3>
+        <div class="flex flex-wrap gap-2">
+          @for (note of noteOptions; track note) {
+            <button
+              (click)="toggleNote(note)"
+              class="px-4 py-2 border font-body text-label-caps uppercase tracking-widest transition-all"
+              [class.bg-primary]="isNoteSelected(note)"
+              [class.text-on-primary]="isNoteSelected(note)"
+              [class.border-primary]="isNoteSelected(note)"
+              [class.border-outline-variant]="!isNoteSelected(note)"
+              [class.text-secondary]="!isNoteSelected(note)"
+              [class.hover:bg-primary]="!isNoteSelected(note)"
+              [class.hover:text-on-primary]="!isNoteSelected(note)"
+            >
+              {{ note }}
+            </button>
+          }
+        </div>
+      </section>
+
+      <!-- Filtro: Marca (radio = solo una) -->
+      <section>
+        <h3 class="font-body text-label-caps mb-6 text-primary tracking-widest uppercase">
+          Brand
+        </h3>
+        <div class="space-y-4">
+          @for (brand of brandOptions; track brand) {
+            <label class="flex items-center group cursor-pointer">
+              <input
+                type="radio"
+                name="brand"
+                [checked]="selectedBrand() === brand"
+                (change)="selectBrand(brand)"
+                class="w-4 h-4 border-outline-variant text-primary focus:ring-0 mr-3 cursor-pointer"
+              />
+              <span
+                class="font-body text-body-md transition-colors"
+                [class.text-primary]="selectedBrand() === brand"
+                [class.text-secondary]="selectedBrand() !== brand"
+              >
+                {{ brand }}
+              </span>
+            </label>
+          }
+        </div>
+      </section>
+
+    </aside>
+
+
+    <!-- ── GRID DE PRODUCTOS ──────────────────── -->
+    <div class="md:col-span-9">
+
+      <!-- Sin resultados -->
+      @if (paginatedPerfumes().length === 0) {
+        <div class="flex flex-col items-center justify-center py-32 text-center">
+          <p class="font-display text-headline-lg text-primary mb-4">No fragrances found</p>
+          <p class="font-body text-body-md text-secondary mb-8">
+            Try adjusting your filters to discover more.
+          </p>
+          <button
+            (click)="clearAllFilters()"
+            class="border border-primary text-primary px-8 py-4 font-body text-label-caps uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all"
+          >
+            Clear Filters
+          </button>
+        </div>
+      }
+
+      <!-- Grid de productos -->
+      @if (paginatedPerfumes().length > 0) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-gutter gap-y-16">
+          @for (perfume of paginatedPerfumes(); track perfume.id) {
+            <app-product-card [product]="perfume" variant="catalog" />
+          }
+        </div>
+
+        <!-- Paginación -->
+        <div class="mt-20 flex justify-center items-center gap-8">
+
+          <!-- Anterior -->
+          <button
+            (click)="goToPage(currentPage() - 1)"
+            [disabled]="currentPage() === 1"
+            class="material-symbols-outlined text-secondary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            west
+          </button>
+
+          <!-- Números de página -->
+          <div class="flex gap-4 font-body text-label-caps">
+            @for (page of pageNumbers(); track page) {
+              <!-- Mostrar solo páginas cercanas a la actual -->
+              @if (page <= 3 || page === totalPages() || Math.abs(page - currentPage()) <= 1) {
+                <button
+                  (click)="goToPage(page)"
+                  class="transition-colors uppercase tracking-widest min-w-[24px]"
+                  [class.text-primary]="currentPage() === page"
+                  [class.font-bold]="currentPage() === page"
+                  [class.border-b]="currentPage() === page"
+                  [class.border-primary]="currentPage() === page"
+                  [class.text-secondary]="currentPage() !== page"
+                  [class.hover:text-primary]="currentPage() !== page"
+                >
+                  {{ page.toString().padStart(2, '0') }}
+                </button>
+              }
+              <!-- Puntos suspensivos -->
+              @if (page === 3 && totalPages() > 5 && currentPage() < totalPages() - 2) {
+                <span class="text-secondary">...</span>
+              }
+            }
+          </div>
+
+          <!-- Siguiente -->
+          <button
+            (click)="goToPage(currentPage() + 1)"
+            [disabled]="currentPage() === totalPages()"
+            class="material-symbols-outlined text-secondary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            east
+          </button>
+
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

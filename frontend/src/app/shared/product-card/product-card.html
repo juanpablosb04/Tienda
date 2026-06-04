@@ -1,0 +1,67 @@
+<!-- ── VARIANTE CATÁLOGO ─────────────────────────────── -->
+@if (variant === 'catalog') {
+  <div
+    [routerLink]="['/perfumes', product.id]"
+    class="group cursor-pointer"
+  >
+    <div class="aspect-[4/5] bg-surface-container-lowest overflow-hidden mb-6 border border-outline-variant/10 relative">
+      <img
+        [src]="product.image"
+        [alt]="product.name"
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+      @if (product.isNew) {
+        <div class="absolute top-4 right-4 bg-primary text-on-primary px-3 py-1 font-body text-[10px] uppercase tracking-widest">
+          NEW
+        </div>
+      }
+    </div>
+    <p class="font-body text-label-caps text-secondary mb-1 uppercase tracking-widest">
+      {{ product.brand }}
+    </p>
+    <h3 class="font-display text-headline-md mb-2 transition-all group-hover:italic">
+      {{ product.name }}
+    </h3>
+    <p class="font-body text-body-md text-primary">
+      ${{ product.price }}.00
+    </p>
+  </div>
+}
+
+<!-- ── VARIANTE HOME ─────────────────────────────────── -->
+@if (variant === 'home') {
+  <div
+    [routerLink]="['/perfumes', product.id]"
+    class="group cursor-pointer"
+  >
+    <div
+      class="bg-surface-container-lowest overflow-hidden mb-6 relative"
+      [class.aspect-square]="size === 'default'"
+      [class.aspect-[4/5]]="size === 'large'"
+    >
+      <img
+        [src]="product.image"
+        [alt]="product.name"
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+      @if (product.isNew) {
+        <div class="absolute top-4 right-4 bg-primary text-on-primary px-3 py-1 font-body text-[10px] uppercase tracking-widest">
+          NEW
+        </div>
+      }
+    </div>
+    <div class="flex justify-between items-start">
+      <div>
+        <h4 class="font-display text-headline-md text-primary mb-1">
+          {{ product.name }}
+        </h4>
+        <p class="font-body text-body-md text-secondary">
+          {{ product.notes.join(', ') }}
+        </p>
+      </div>
+      <span class="font-body text-body-lg text-primary">
+        ${{ product.price }}
+      </span>
+    </div>
+  </div>
+}

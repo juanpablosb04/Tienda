@@ -1,0 +1,11 @@
+
+/* Scrollbar personalizado para el sidebar de marcas */
+.brand-list::-webkit-scrollbar {
+  width: 4px;
+}
+.brand-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.brand-list::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+}
