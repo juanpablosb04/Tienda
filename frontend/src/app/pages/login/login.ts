@@ -1,6 +1,7 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,18 +10,18 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.html',
 })
 export class LoginComponent {
-  private router = inject(Router);
+  private router      = inject(Router);
+  private authService = inject(AuthService);
 
-  email       = signal('');
-  password    = signal('');
-  showPass    = signal(false);
-  isLoading   = signal(false);
-  errorMsg    = signal('');
+  email     = signal('');
+  password  = signal('');
+  showPass  = signal(false);
+  isLoading = signal(false);
+  errorMsg  = signal('');
 
   onSubmit(): void {
     this.errorMsg.set('');
 
-    // Validación básica
     if (!this.email() || !this.password()) {
       this.errorMsg.set('Please fill in all fields.');
       return;
@@ -30,13 +31,11 @@ export class LoginComponent {
       return;
     }
 
-    // Simular llamada al backend
-    // Cuando conectes Django: aquí va this.authService.login(email, password)
     this.isLoading.set(true);
     setTimeout(() => {
+      this.authService.login(this.email(), this.password());
       this.isLoading.set(false);
-      // Por ahora redirige al home
-      this.router.navigate(['/']);
+      this.router.navigate(['/profile']);
     }, 1500);
   }
 }

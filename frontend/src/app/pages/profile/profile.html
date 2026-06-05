@@ -1,0 +1,198 @@
+<div class="pt-28 pb-section-gap max-w-container-max mx-auto px-margin-desktop">
+  <div class="grid grid-cols-12 gap-16">
+
+    <!-- Sidebar -->
+    <aside class="col-span-3">
+      <nav class="space-y-6">
+        <button
+          (click)="activeTab.set('profile')"
+          class="block font-body text-label-caps uppercase tracking-widest transition-colors w-full text-left"
+          [class.text-primary]="activeTab() === 'profile'"
+          [class.border-l]="activeTab() === 'profile'"
+          [class.border-primary]="activeTab() === 'profile'"
+          [class.pl-4]="activeTab() === 'profile'"
+          [class.text-secondary]="activeTab() !== 'profile'"
+        >
+          Mi Perfil
+        </button>
+        <button
+          (click)="activeTab.set('orders')"
+          class="block font-body text-label-caps uppercase tracking-widest transition-colors w-full text-left"
+          [class.text-primary]="activeTab() === 'orders'"
+          [class.border-l]="activeTab() === 'orders'"
+          [class.border-primary]="activeTab() === 'orders'"
+          [class.pl-4]="activeTab() === 'orders'"
+          [class.text-secondary]="activeTab() !== 'orders'"
+        >
+          Mis Pedidos
+        </button>
+        <button
+          (click)="activeTab.set('addresses')"
+          class="block font-body text-label-caps uppercase tracking-widest transition-colors w-full text-left"
+          [class.text-primary]="activeTab() === 'addresses'"
+          [class.border-l]="activeTab() === 'addresses'"
+          [class.border-primary]="activeTab() === 'addresses'"
+          [class.pl-4]="activeTab() === 'addresses'"
+          [class.text-secondary]="activeTab() !== 'addresses'"
+        >
+          Direcciones
+        </button>
+      </nav>
+
+      <div class="border-t border-outline-variant/30 mt-10 pt-8">
+        <button
+          (click)="logout()"
+          class="flex items-center gap-2 font-body text-label-caps text-secondary hover:text-primary transition-colors uppercase tracking-widest"
+        >
+          <span class="material-symbols-outlined text-[16px]">logout</span>
+          Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- Contenido -->
+    <div class="col-span-9">
+
+      <!-- Tab: Mi Perfil -->
+      @if (activeTab() === 'profile' && user()) {
+        <div>
+          <h1 class="font-display text-headline-lg text-primary mb-10">Información Personal</h1>
+
+          <!-- Campo: Nombre -->
+          <div class="flex items-center justify-between py-6 border-b border-outline-variant/30">
+            @if (editingField() === 'firstName') {
+              <div class="flex-1 flex items-center gap-4">
+                <input
+                  [value]="editValue()"
+                  (input)="editValue.set($any($event.target).value)"
+                  class="border-b border-primary bg-transparent py-1 font-body text-body-md text-primary focus:outline-none flex-1"
+                />
+                <button (click)="saveEdit('firstName')" class="font-body text-label-caps text-primary uppercase tracking-widest hover:opacity-60">Save</button>
+                <button (click)="cancelEdit()" class="font-body text-label-caps text-secondary uppercase tracking-widest hover:opacity-60">Cancel</button>
+              </div>
+            } @else {
+              <div>
+                <p class="font-body text-label-caps text-secondary uppercase tracking-widest mb-1">Nombre Completo</p>
+                <p class="font-body text-body-lg text-primary">{{ user()!.firstName }} {{ user()!.lastName }}</p>
+              </div>
+              <button
+                (click)="startEdit('firstName', user()!.firstName)"
+                class="font-body text-label-caps text-secondary hover:text-primary transition-colors uppercase tracking-widest"
+              >
+                Editar
+              </button>
+            }
+          </div>
+
+          <!-- Campo: Email -->
+          <div class="flex items-center justify-between py-6 border-b border-outline-variant/30">
+            @if (editingField() === 'email') {
+              <div class="flex-1 flex items-center gap-4">
+                <input
+                  [value]="editValue()"
+                  (input)="editValue.set($any($event.target).value)"
+                  class="border-b border-primary bg-transparent py-1 font-body text-body-md text-primary focus:outline-none flex-1"
+                />
+                <button (click)="saveEdit('email')" class="font-body text-label-caps text-primary uppercase tracking-widest hover:opacity-60">Save</button>
+                <button (click)="cancelEdit()" class="font-body text-label-caps text-secondary uppercase tracking-widest hover:opacity-60">Cancel</button>
+              </div>
+            } @else {
+              <div>
+                <p class="font-body text-label-caps text-secondary uppercase tracking-widest mb-1">Correo Electrónico</p>
+                <p class="font-body text-body-lg text-primary">{{ user()!.email }}</p>
+              </div>
+              <button
+                (click)="startEdit('email', user()!.email)"
+                class="font-body text-label-caps text-secondary hover:text-primary transition-colors uppercase tracking-widest"
+              >
+                Editar
+              </button>
+            }
+          </div>
+
+          <!-- Campo: Teléfono -->
+          <div class="flex items-center justify-between py-6 border-b border-outline-variant/30">
+            @if (editingField() === 'phone') {
+              <div class="flex-1 flex items-center gap-4">
+                <input
+                  [value]="editValue()"
+                  (input)="editValue.set($any($event.target).value)"
+                  class="border-b border-primary bg-transparent py-1 font-body text-body-md text-primary focus:outline-none flex-1"
+                />
+                <button (click)="saveEdit('phone')" class="font-body text-label-caps text-primary uppercase tracking-widest hover:opacity-60">Save</button>
+                <button (click)="cancelEdit()" class="font-body text-label-caps text-secondary uppercase tracking-widest hover:opacity-60">Cancel</button>
+              </div>
+            } @else {
+              <div>
+                <p class="font-body text-label-caps text-secondary uppercase tracking-widest mb-1">Teléfono de Contacto</p>
+                <p class="font-body text-body-lg text-primary">{{ user()!.phone }}</p>
+              </div>
+              <button
+                (click)="startEdit('phone', user()!.phone)"
+                class="font-body text-label-caps text-secondary hover:text-primary transition-colors uppercase tracking-widest"
+              >
+                Editar
+              </button>
+            }
+          </div>
+
+          <!-- Campo: Fecha de nacimiento -->
+          <div class="flex items-center justify-between py-6 border-b border-outline-variant/30">
+            @if (editingField() === 'birthdate') {
+              <div class="flex-1 flex items-center gap-4">
+                <input
+                  [value]="editValue()"
+                  (input)="editValue.set($any($event.target).value)"
+                  class="border-b border-primary bg-transparent py-1 font-body text-body-md text-primary focus:outline-none flex-1"
+                />
+                <button (click)="saveEdit('birthdate')" class="font-body text-label-caps text-primary uppercase tracking-widest hover:opacity-60">Save</button>
+                <button (click)="cancelEdit()" class="font-body text-label-caps text-secondary uppercase tracking-widest hover:opacity-60">Cancel</button>
+              </div>
+            } @else {
+              <div>
+                <p class="font-body text-label-caps text-secondary uppercase tracking-widest mb-1">Fecha de Nacimiento</p>
+                <p class="font-body text-body-lg text-primary">{{ user()!.birthdate }}</p>
+              </div>
+              <button
+                (click)="startEdit('birthdate', user()!.birthdate)"
+                class="font-body text-label-caps text-secondary hover:text-primary transition-colors uppercase tracking-widest"
+              >
+                Editar
+              </button>
+            }
+          </div>
+
+        </div>
+      }
+
+      <!-- Tab: Mis Pedidos -->
+      @if (activeTab() === 'orders') {
+        <div>
+          <h1 class="font-display text-headline-lg text-primary mb-10">Mis Pedidos</h1>
+          <div class="flex flex-col items-center justify-center py-24 text-center">
+            <span class="material-symbols-outlined text-5xl text-secondary mb-4">package_2</span>
+            <p class="font-body text-body-lg text-secondary">No tienes pedidos todavía.</p>
+            <a routerLink="/perfumes" class="mt-6 border-b border-primary font-body text-label-caps text-primary uppercase tracking-widest hover:opacity-60 transition-opacity">
+              Explorar Colección
+            </a>
+          </div>
+        </div>
+      }
+
+      <!-- Tab: Direcciones -->
+      @if (activeTab() === 'addresses') {
+        <div>
+          <h1 class="font-display text-headline-lg text-primary mb-10">Direcciones</h1>
+          <div class="flex flex-col items-center justify-center py-24 text-center">
+            <span class="material-symbols-outlined text-5xl text-secondary mb-4">location_on</span>
+            <p class="font-body text-body-lg text-secondary">No tienes direcciones guardadas.</p>
+            <button class="mt-6 border border-primary text-primary px-8 py-4 font-body text-label-caps uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all">
+              Agregar Dirección
+            </button>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

@@ -38,12 +38,16 @@
       <span class="material-symbols-outlined cursor-pointer text-primary hover:opacity-70 transition-opacity">
         search
       </span>
-      <span
-      routerLink="/login"
-        class="material-symbols-outlined cursor-pointer text-primary hover:opacity-70 transition-opacity"
-      >
-        person
-      </span>
+      @if (authService.isLoggedIn()) {
+        <a routerLink="/profile" class="relative hover:opacity-70 transition-opacity">
+          <span class="material-symbols-outlined text-primary">person</span>
+          <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"></span>
+        </a>
+      } @else {
+        <a routerLink="/login" class="hover:opacity-70 transition-opacity">
+          <span class="material-symbols-outlined text-primary">person</span>
+        </a>
+      }
       <!-- Ícono carrito con badge -->
       <a routerLink="/cart" class="relative cursor-pointer hover:opacity-70 transition-opacity">
         <span class="material-symbols-outlined text-primary">shopping_bag</span>
